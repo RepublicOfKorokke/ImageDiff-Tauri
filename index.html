@@ -2,20 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="/src/styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="node_modules/image-compare-viewer/dist/image-compare-viewer.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="/src/styles.css" />
     <title>Tauri App</title>
     <script type="module" src="/src/main.ts" defer></script>
   </head>
 
   <body>
-    <div class="container">
-      <h1>Oga!</h1>
-      <h1>Welcome to Tauri!</h1>
-
-      <button id="oga-button" type="button">Oga dayo</button>
-      <p id="oga-msg">oga-msg</p>
-      <button id="open-button" type="button">Open</button>
+    <div class="image-select-button">
+      <button id="buttonOpenLeftSideImage" type="button">
+        Left side image
+      </button>
+      <button id="buttonOpenRightSideImage" type="button">
+        Right side image
+      </button>
+    </div>
+    <div id="image-compare">
+      <img id="leftSideImage" src="src/assets/sampleA.jpg" alt="" />
+      <img id="rightSideImage" src="src/assets/sampleB.jpg" alt="" />
     </div>
   </body>
 </html>
