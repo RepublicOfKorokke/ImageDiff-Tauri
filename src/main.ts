@@ -76,7 +76,7 @@ document.body.addEventListener("click", function () {
 });
 
 window.addEventListener("load", () => {
-  changeCompareMode(COMPARE_MODE.CLICK);
+  changeCompareMode(COMPARE_MODE.SLIDE);
 });
 
 async function selectImage(onSelected: (path: string) => void) {
