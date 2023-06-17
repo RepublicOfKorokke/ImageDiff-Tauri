@@ -1,8 +1,9 @@
 name: 'publish'
 on:
-  push:
+  pull_request:
     branches:
-      - main # 簡単のため main に変更
+      - main
+    types: [closed]
 
 jobs:
   publish-tauri:
