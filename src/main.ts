@@ -9,41 +9,41 @@ const COMPARE_MODE = {
 } as const;
 type COMPARE_MODE = (typeof COMPARE_MODE)[keyof typeof COMPARE_MODE];
 
-const leftSideImage = document.getElementById(
+const mLeftSideImage = document.getElementById(
   "leftSideImage"
 ) as HTMLImageElement;
 
-const leftSideButton = document.getElementById(
+const mLeftSideButton = document.getElementById(
   "buttonOpenLeftSideImage"
 ) as HTMLImageElement;
 
-const rightSideImage = document.getElementById(
+const mRightSideImage = document.getElementById(
   "rightSideImage"
 ) as HTMLImageElement;
 
-const rightSideButton = document.getElementById(
+const mRightSideButton = document.getElementById(
   "buttonOpenRightSideImage"
 ) as HTMLImageElement;
 
-const imageViewer = document.getElementById("imageViewer");
+const mImageViewer = document.getElementById("imageViewer");
 
-const onMouseClickedFunction = () => {
+const mOnMouseClickedFunction = () => {
   comparisonClick();
 };
 
-const onMouseMoveFunction = (event: MouseEvent) => {
+const mOnMouseMoveFunction = (event: MouseEvent) => {
   comparisonSlide(event);
 };
 
-let isLeftSideVisible: boolean = true;
+let mIsLeftSideVisible: boolean = true;
 
 document.addEventListener("DOMContentLoaded", () => {
-  leftSideButton?.addEventListener("click", () =>
+  mLeftSideButton?.addEventListener("click", () =>
     selectImage((path) => {
       setImage(path, true);
     })
   );
-  rightSideButton?.addEventListener("click", () =>
+  mRightSideButton?.addEventListener("click", () =>
     selectImage((path) => {
       setImage(path, false);
     })
@@ -88,8 +88,8 @@ async function changeWindowSize(width: number, height: number) {
 
 function setImage(path: string, isLeftSide: boolean) {
   let pathSrc = convertFileSrc(path as string);
-  let targetImage = isLeftSide ? leftSideImage : rightSideImage;
-  let targetButton = isLeftSide ? leftSideButton : rightSideButton;
+  let targetImage = isLeftSide ? mLeftSideImage : mRightSideImage;
+  let targetButton = isLeftSide ? mLeftSideButton : mRightSideButton;
 
   if (targetImage) {
     targetImage.src = pathSrc;
@@ -116,19 +116,19 @@ function changeCompareMode(mode: COMPARE_MODE) {
 
 function changeToSlideMode() {
   document.getElementById("left")!.style.width = "50%";
-  leftSideImage.style.visibility = "visible";
-  rightSideImage.style.visibility = "visible";
-  imageViewer?.removeEventListener("click", onMouseClickedFunction);
-  document.addEventListener("mousemove", onMouseMoveFunction);
+  mLeftSideImage.style.visibility = "visible";
+  mRightSideImage.style.visibility = "visible";
+  mImageViewer?.removeEventListener("click", mOnMouseClickedFunction);
+  document.addEventListener("mousemove", mOnMouseMoveFunction);
 }
 
 function changeToClickMode() {
   document.getElementById("left")!.style.width = "100%";
-  leftSideImage.style.visibility = "visible";
-  rightSideImage.style.visibility = "collapse";
-  isLeftSideVisible = true;
-  imageViewer?.addEventListener("click", onMouseClickedFunction);
-  document.removeEventListener("mousemove", onMouseMoveFunction);
+  mLeftSideImage.style.visibility = "visible";
+  mRightSideImage.style.visibility = "collapse";
+  mIsLeftSideVisible = true;
+  mImageViewer?.addEventListener("click", mOnMouseClickedFunction);
+  document.removeEventListener("mousemove", mOnMouseMoveFunction);
 }
 
 function comparisonSlide(event: MouseEvent) {
@@ -140,12 +140,12 @@ function comparisonSlide(event: MouseEvent) {
 
 function comparisonClick() {
   invoke("print_log", { text: `Clicked` });
-  if (isLeftSideVisible) {
-    leftSideImage.style.visibility = "collapse";
-    rightSideImage.style.visibility = "visible";
+  if (mIsLeftSideVisible) {
+    mLeftSideImage.style.visibility = "collapse";
+    mRightSideImage.style.visibility = "visible";
   } else {
-    leftSideImage.style.visibility = "visible";
-    rightSideImage.style.visibility = "collapse";
+    mLeftSideImage.style.visibility = "visible";
+    mRightSideImage.style.visibility = "collapse";
   }
-  isLeftSideVisible = !isLeftSideVisible;
+  mIsLeftSideVisible = !mIsLeftSideVisible;
 }
