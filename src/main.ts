@@ -159,8 +159,7 @@ function changeToClickMode() {
 }
 
 function comparisonSlide(event: MouseEvent) {
-  let percentX: string =
-    ((event.pageX / window.innerWidth) * 100).toString() + "%";
+  let percentX: string = event.clientX - 10 + "px";
   // let percentY: number = (event.pageY / window.innerHeight) * 100;
   invoke("print_log", { text: `X: ${percentX}` });
   mImageLeftArea!.style.width = percentX;
