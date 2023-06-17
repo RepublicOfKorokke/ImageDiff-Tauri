@@ -92,6 +92,7 @@ img {
   flex-wrap: nowrap;
   padding-inline: 10px;
   padding-block: 3px;
+  z-index: 2;
 }
 
 .context-menu button {
