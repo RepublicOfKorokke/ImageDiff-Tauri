@@ -23,6 +23,8 @@ const mRightSideButton = document.getElementById(
 ) as HTMLImageElement;
 
 const mImageViewer = document.getElementById("imageViewer");
+const mImageDivider = document.getElementById("imageDivider");
+const mImageLeftArea = document.getElementById("leftArea");
 
 const mContextMenu = document.getElementById("contextmenu");
 const mOptionSlideButton = document.getElementById(
@@ -138,27 +140,31 @@ function changeCompareMode(mode: COMPARE_MODE) {
 }
 
 function changeToSlideMode() {
-  document.getElementById("left")!.style.width = "50%";
+  mImageLeftArea!.style.width = "50%";
   mLeftSideImage.style.visibility = "visible";
   mRightSideImage.style.visibility = "visible";
+  mImageDivider!.style.display = "block";
   mImageViewer?.removeEventListener("click", mOnMouseClickedFunction);
   document.addEventListener("mousemove", mOnMouseMoveFunction);
 }
 
 function changeToClickMode() {
-  document.getElementById("left")!.style.width = "100%";
+  mImageLeftArea!.style.width = "100%";
   mLeftSideImage.style.visibility = "visible";
   mRightSideImage.style.visibility = "collapse";
+  mImageDivider!.style.display = "none";
   mIsLeftSideVisible = true;
   mImageViewer?.addEventListener("click", mOnMouseClickedFunction);
   document.removeEventListener("mousemove", mOnMouseMoveFunction);
 }
 
 function comparisonSlide(event: MouseEvent) {
-  let percentX: number = (event.pageX / window.innerWidth) * 100;
+  let percentX: string =
+    ((event.pageX / window.innerWidth) * 100).toString() + "%";
   // let percentY: number = (event.pageY / window.innerHeight) * 100;
   invoke("print_log", { text: `X: ${percentX}` });
-  document.getElementById("left")!.style.width = percentX.toString() + "%";
+  mImageLeftArea!.style.width = percentX;
+  mImageDivider!.style.left = percentX;
 }
 
 function comparisonClick() {

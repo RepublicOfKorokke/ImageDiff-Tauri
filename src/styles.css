@@ -61,7 +61,17 @@ img {
   position: relative;
 }
 
-.image-viewer #left {
+.image-viewer .image-divider {
+  position: absolute;
+  display: block;
+  height: 100%;
+  left: 50%;
+  width: 1px;
+  z-index: 1;
+  background: white;
+}
+
+.image-viewer #leftArea {
   position: absolute;
   top: 0;
   height: 100%;
