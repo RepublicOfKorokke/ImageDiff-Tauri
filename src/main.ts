@@ -4,6 +4,13 @@ import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 // @ts-ignore
 import ImageCompare from "image-compare-viewer";
 
+const COMPARE_MODE = {
+  SLIDE: 0,
+  CLICK: 1,
+  FADE: 2,
+} as const;
+type COMPARE_MODE = (typeof COMPARE_MODE)[keyof typeof COMPARE_MODE];
+
 const leftSideImage = document.getElementById(
   "leftSideImage"
 ) as HTMLImageElement;
@@ -34,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 window.addEventListener("load", () => {
-  compareImage();
+  compareImage(COMPARE_MODE.SLIDE);
 });
 
 async function selectImage(onSelected: (path: string) => void) {
@@ -82,7 +89,21 @@ function setImage(path: string, isLeftSide: boolean) {
   }
 }
 
-function compareImage() {
+function compareImage(mode: COMPARE_MODE) {
+  switch (mode) {
+    case COMPARE_MODE.SLIDE:
+      comparisonSlide();
+      break;
+    case COMPARE_MODE.CLICK:
+      break;
+    case COMPARE_MODE.FADE:
+      break;
+    default:
+      break;
+  }
+}
+
+function comparisonSlide() {
   const element = document.getElementById("image-compare");
 
   const options = {
