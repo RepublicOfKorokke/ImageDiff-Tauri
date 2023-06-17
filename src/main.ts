@@ -27,6 +27,16 @@ const rightSideButton = document.getElementById(
   "buttonOpenRightSideImage"
 ) as HTMLImageElement;
 
+const imageViewer = document.getElementById("image-compare");
+
+main();
+
+function main() {
+  imageViewer?.addEventListener("click", () =>
+    compareImage(COMPARE_MODE.CLICK)
+  );
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   leftSideButton?.addEventListener("click", () =>
     selectImage((path) => {
@@ -95,6 +105,7 @@ function compareImage(mode: COMPARE_MODE) {
       comparisonSlide();
       break;
     case COMPARE_MODE.CLICK:
+      invoke("print_log", { text: "COMPARE_MODE.CLICK" });
       break;
     case COMPARE_MODE.FADE:
       break;
@@ -104,8 +115,6 @@ function compareImage(mode: COMPARE_MODE) {
 }
 
 function comparisonSlide() {
-  const element = document.getElementById("image-compare");
-
   const options = {
     controlColor: "#FFFFFF",
     controlShadow: true,
@@ -134,5 +143,5 @@ function comparisonSlide() {
     fluidMode: false,
   };
 
-  new ImageCompare(element, options).mount();
+  new ImageCompare(imageViewer, options).mount();
 }
