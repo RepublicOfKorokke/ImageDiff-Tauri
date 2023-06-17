@@ -15,13 +15,25 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  /* Disable select elements */
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 img {
-  max-width: 90vw;
+  max-width: 100vw;
 }
 
-button {
+.image-select-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.image-select-button button {
+  width: 50%;
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.3vh 0.6vw;
@@ -37,20 +49,67 @@ button {
   outline: none;
 }
 
-button:hover {
+.image-select-button button:hover {
   border-color: #008ce8;
 }
 
-button:active {
+.image-select-button button:active {
   background-color: #2d2d2d;
 }
 
-.image-select-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+.image-viewer {
+  position: relative;
 }
 
-.image-select-button button {
+.image-viewer .image-divider {
+  position: absolute;
+  display: block;
+  height: 100%;
+  left: 50%;
+  width: 1px;
+  z-index: 1;
+  background: white;
+}
+
+.image-viewer #leftArea {
+  position: absolute;
+  top: 0;
+  height: 100%;
   width: 50%;
+  overflow: hidden;
+}
+
+.context-menu {
+  display: none;
+  position: absolute;
+  width: auto;
+  height: auto;
+  border-radius: 3px;
+  background-color: rgba(76, 76, 76, 1);
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  flex-wrap: nowrap;
+  padding-inline: 10px;
+  padding-block: 3px;
+}
+
+.context-menu button {
+  color: rgba(255, 255, 255, 1);
+  font-style: normal;
+  font-size: 1rem;
+  letter-spacing: 0px;
+  text-decoration: none;
+  text-transform: none;
+  background: transparent;
+  width: 100px;
+  height: 20px;
+  border: none;
+  text-align: start;
+  padding-inline-start: 6.5px;
+}
+
+.context-menu button:hover {
+  border-radius: 3px;
+  background-color: rgb(106, 134, 189);
 }

@@ -1,40 +1,82 @@
 import { invoke, convertFileSrc } from "@tauri-apps/api/tauri";
 import { open } from "@tauri-apps/api/dialog";
 import { appWindow, LogicalSize } from "@tauri-apps/api/window";
-// @ts-ignore
-import ImageCompare from "image-compare-viewer";
 
-const leftSideImage = document.getElementById(
+const COMPARE_MODE = {
+  SLIDE: 0,
+  CLICK: 1,
+  FADE: 2,
+} as const;
+type COMPARE_MODE = (typeof COMPARE_MODE)[keyof typeof COMPARE_MODE];
+
+const mLeftSideImage = document.getElementById(
   "leftSideImage"
 ) as HTMLImageElement;
-
-const leftSideButton = document.getElementById(
+const mLeftSideButton = document.getElementById(
   "buttonOpenLeftSideImage"
 ) as HTMLImageElement;
-
-const rightSideImage = document.getElementById(
+const mRightSideImage = document.getElementById(
   "rightSideImage"
 ) as HTMLImageElement;
-
-const rightSideButton = document.getElementById(
+const mRightSideButton = document.getElementById(
   "buttonOpenRightSideImage"
 ) as HTMLImageElement;
 
+const mImageViewer = document.getElementById("imageViewer");
+const mImageDivider = document.getElementById("imageDivider");
+const mImageLeftArea = document.getElementById("leftArea");
+
+const mContextMenu = document.getElementById("contextmenu");
+const mOptionSlideButton = document.getElementById(
+  "optionSlide"
+) as HTMLImageElement;
+const mOptionClickButton = document.getElementById(
+  "optionClick"
+) as HTMLImageElement;
+
+const mOnMouseClickedFunction = () => {
+  comparisonClick();
+};
+const mOnMouseMoveFunction = (event: MouseEvent) => {
+  comparisonSlide(event);
+};
+
+let mIsLeftSideVisible: boolean = true;
+
 document.addEventListener("DOMContentLoaded", () => {
-  leftSideButton?.addEventListener("click", () =>
+  mLeftSideButton?.addEventListener("click", () =>
     selectImage((path) => {
       setImage(path, true);
     })
   );
-  rightSideButton?.addEventListener("click", () =>
+  mRightSideButton?.addEventListener("click", () =>
     selectImage((path) => {
       setImage(path, false);
     })
   );
+
+  mOptionSlideButton?.addEventListener("click", () =>
+    changeCompareMode(COMPARE_MODE.SLIDE)
+  );
+
+  mOptionClickButton?.addEventListener("click", () =>
+    changeCompareMode(COMPARE_MODE.CLICK)
+  );
+});
+
+document.body.addEventListener("contextmenu", (event) => {
+  invoke("print_log", { text: `contextmenu` });
+  mContextMenu!.style.left = event.pageX + "px";
+  mContextMenu!.style.top = event.pageY + "px";
+  mContextMenu!.style.display = "flex";
+});
+
+document.body.addEventListener("click", function () {
+  mContextMenu!.style.display = "none";
 });
 
 window.addEventListener("load", () => {
-  compareImage();
+  changeCompareMode(COMPARE_MODE.SLIDE);
 });
 
 async function selectImage(onSelected: (path: string) => void) {
@@ -71,8 +113,8 @@ async function changeWindowSize(width: number, height: number) {
 
 function setImage(path: string, isLeftSide: boolean) {
   let pathSrc = convertFileSrc(path as string);
-  let targetImage = isLeftSide ? leftSideImage : rightSideImage;
-  let targetButton = isLeftSide ? leftSideButton : rightSideButton;
+  let targetImage = isLeftSide ? mLeftSideImage : mRightSideImage;
+  let targetButton = isLeftSide ? mLeftSideButton : mRightSideButton;
 
   if (targetImage) {
     targetImage.src = pathSrc;
@@ -82,36 +124,57 @@ function setImage(path: string, isLeftSide: boolean) {
   }
 }
 
-function compareImage() {
-  const element = document.getElementById("image-compare");
+function changeCompareMode(mode: COMPARE_MODE) {
+  switch (mode) {
+    case COMPARE_MODE.SLIDE:
+      changeToSlideMode();
+      break;
+    case COMPARE_MODE.CLICK:
+      changeToClickMode();
+      break;
+    case COMPARE_MODE.FADE:
+      break;
+    default:
+      break;
+  }
+}
 
-  const options = {
-    controlColor: "#FFFFFF",
-    controlShadow: true,
-    addCircle: false,
-    addCircleBlur: true,
+function changeToSlideMode() {
+  mImageLeftArea!.style.width = "50%";
+  mLeftSideImage.style.visibility = "visible";
+  mRightSideImage.style.visibility = "visible";
+  mImageDivider!.style.display = "block";
+  mImageViewer?.removeEventListener("click", mOnMouseClickedFunction);
+  document.addEventListener("mousemove", mOnMouseMoveFunction);
+}
 
-    // Label Defaults
+function changeToClickMode() {
+  mImageLeftArea!.style.width = "100%";
+  mLeftSideImage.style.visibility = "visible";
+  mRightSideImage.style.visibility = "collapse";
+  mImageDivider!.style.display = "none";
+  mIsLeftSideVisible = true;
+  mImageViewer?.addEventListener("click", mOnMouseClickedFunction);
+  document.removeEventListener("mousemove", mOnMouseMoveFunction);
+}
 
-    showLabels: false,
-    labelOptions: {
-      before: "Before",
-      after: "After",
-      onHover: false,
-    },
+function comparisonSlide(event: MouseEvent) {
+  let percentX: string =
+    ((event.pageX / window.innerWidth) * 100).toString() + "%";
+  // let percentY: number = (event.pageY / window.innerHeight) * 100;
+  invoke("print_log", { text: `X: ${percentX}` });
+  mImageLeftArea!.style.width = percentX;
+  mImageDivider!.style.left = percentX;
+}
 
-    // Smoothing
-
-    smoothing: false,
-    smoothingAmount: 100,
-
-    // Other options
-
-    hoverStart: true,
-    verticalMode: false,
-    startingPoint: 50,
-    fluidMode: false,
-  };
-
-  new ImageCompare(element, options).mount();
+function comparisonClick() {
+  invoke("print_log", { text: `Clicked` });
+  if (mIsLeftSideVisible) {
+    mLeftSideImage.style.visibility = "collapse";
+    mRightSideImage.style.visibility = "visible";
+  } else {
+    mLeftSideImage.style.visibility = "visible";
+    mRightSideImage.style.visibility = "collapse";
+  }
+  mIsLeftSideVisible = !mIsLeftSideVisible;
 }
