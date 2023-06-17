@@ -25,6 +25,16 @@ const rightSideButton = document.getElementById(
   "buttonOpenRightSideImage"
 ) as HTMLImageElement;
 
+const imageViewer = document.getElementById("imageViewer");
+
+const onMouseClickedFunction = () => {
+  comparisonClick();
+};
+
+const onMouseMoveFunction = (event: MouseEvent) => {
+  comparisonSlide(event);
+};
+
 let isLeftSideVisible: boolean = true;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -41,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 window.addEventListener("load", () => {
-  compareImage(COMPARE_MODE.SLIDE);
+  changeCompareMode(COMPARE_MODE.CLICK);
 });
 
 async function selectImage(onSelected: (path: string) => void) {
@@ -89,25 +99,36 @@ function setImage(path: string, isLeftSide: boolean) {
   }
 }
 
-function compareImage(mode: COMPARE_MODE) {
+function changeCompareMode(mode: COMPARE_MODE) {
   switch (mode) {
     case COMPARE_MODE.SLIDE:
-      document.addEventListener("mousemove", (event) => {
-        comparisonSlide(event);
-      });
+      changeToSlideMode();
       break;
     case COMPARE_MODE.CLICK:
-      invoke("print_log", { text: "COMPARE_MODE.CLICK" });
-      document.removeEventListener("mousemove", (event) => {
-        comparisonSlide(event);
-      });
-      comparisonClick();
+      changeToClickMode();
       break;
     case COMPARE_MODE.FADE:
       break;
     default:
       break;
   }
+}
+
+function changeToSlideMode() {
+  document.getElementById("left")!.style.width = "50%";
+  leftSideImage.style.visibility = "visible";
+  rightSideImage.style.visibility = "visible";
+  imageViewer?.removeEventListener("click", onMouseClickedFunction);
+  document.addEventListener("mousemove", onMouseMoveFunction);
+}
+
+function changeToClickMode() {
+  document.getElementById("left")!.style.width = "100%";
+  leftSideImage.style.visibility = "visible";
+  rightSideImage.style.visibility = "collapse";
+  isLeftSideVisible = true;
+  imageViewer?.addEventListener("click", onMouseClickedFunction);
+  document.removeEventListener("mousemove", onMouseMoveFunction);
 }
 
 function comparisonSlide(event: MouseEvent) {
@@ -118,6 +139,7 @@ function comparisonSlide(event: MouseEvent) {
 }
 
 function comparisonClick() {
+  invoke("print_log", { text: `Clicked` });
   if (isLeftSideVisible) {
     leftSideImage.style.visibility = "collapse";
     rightSideImage.style.visibility = "visible";
