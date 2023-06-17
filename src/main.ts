@@ -12,25 +12,29 @@ type COMPARE_MODE = (typeof COMPARE_MODE)[keyof typeof COMPARE_MODE];
 const mLeftSideImage = document.getElementById(
   "leftSideImage"
 ) as HTMLImageElement;
-
 const mLeftSideButton = document.getElementById(
   "buttonOpenLeftSideImage"
 ) as HTMLImageElement;
-
 const mRightSideImage = document.getElementById(
   "rightSideImage"
 ) as HTMLImageElement;
-
 const mRightSideButton = document.getElementById(
   "buttonOpenRightSideImage"
 ) as HTMLImageElement;
 
 const mImageViewer = document.getElementById("imageViewer");
 
+const mContextMenu = document.getElementById("contextmenu");
+const mOptionSlideButton = document.getElementById(
+  "optionSlide"
+) as HTMLImageElement;
+const mOptionClickButton = document.getElementById(
+  "optionClick"
+) as HTMLImageElement;
+
 const mOnMouseClickedFunction = () => {
   comparisonClick();
 };
-
 const mOnMouseMoveFunction = (event: MouseEvent) => {
   comparisonSlide(event);
 };
@@ -48,6 +52,25 @@ document.addEventListener("DOMContentLoaded", () => {
       setImage(path, false);
     })
   );
+
+  mOptionSlideButton?.addEventListener("click", () =>
+    changeCompareMode(COMPARE_MODE.SLIDE)
+  );
+
+  mOptionClickButton?.addEventListener("click", () =>
+    changeCompareMode(COMPARE_MODE.CLICK)
+  );
+});
+
+document.body.addEventListener("contextmenu", (event) => {
+  invoke("print_log", { text: `contextmenu` });
+  mContextMenu!.style.left = event.pageX + "px";
+  mContextMenu!.style.top = event.pageY + "px";
+  mContextMenu!.style.display = "flex";
+});
+
+document.body.addEventListener("click", function () {
+  mContextMenu!.style.display = "none";
 });
 
 window.addEventListener("load", () => {
