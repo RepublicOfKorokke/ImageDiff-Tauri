@@ -1,8 +1,6 @@
 import { invoke, convertFileSrc } from "@tauri-apps/api/tauri";
 import { open } from "@tauri-apps/api/dialog";
 import { appWindow, LogicalSize } from "@tauri-apps/api/window";
-// @ts-ignore
-import ImageCompare from "image-compare-viewer";
 
 const COMPARE_MODE = {
   SLIDE: 0,
@@ -27,15 +25,7 @@ const rightSideButton = document.getElementById(
   "buttonOpenRightSideImage"
 ) as HTMLImageElement;
 
-const imageViewer = document.getElementById("image-compare");
-
-main();
-
-function main() {
-  imageViewer?.addEventListener("click", () =>
-    compareImage(COMPARE_MODE.CLICK)
-  );
-}
+let isLeftSideVisible: boolean = true;
 
 document.addEventListener("DOMContentLoaded", () => {
   leftSideButton?.addEventListener("click", () =>
@@ -102,10 +92,16 @@ function setImage(path: string, isLeftSide: boolean) {
 function compareImage(mode: COMPARE_MODE) {
   switch (mode) {
     case COMPARE_MODE.SLIDE:
-      comparisonSlide();
+      document.addEventListener("mousemove", (event) => {
+        comparisonSlide(event);
+      });
       break;
     case COMPARE_MODE.CLICK:
       invoke("print_log", { text: "COMPARE_MODE.CLICK" });
+      document.removeEventListener("mousemove", (event) => {
+        comparisonSlide(event);
+      });
+      comparisonClick();
       break;
     case COMPARE_MODE.FADE:
       break;
@@ -114,34 +110,20 @@ function compareImage(mode: COMPARE_MODE) {
   }
 }
 
-function comparisonSlide() {
-  const options = {
-    controlColor: "#FFFFFF",
-    controlShadow: true,
-    addCircle: false,
-    addCircleBlur: true,
+function comparisonSlide(event: MouseEvent) {
+  let percentX: number = (event.pageX / window.innerWidth) * 100;
+  // let percentY: number = (event.pageY / window.innerHeight) * 100;
+  invoke("print_log", { text: `X: ${percentX}` });
+  document.getElementById("left")!.style.width = percentX.toString() + "%";
+}
 
-    // Label Defaults
-
-    showLabels: false,
-    labelOptions: {
-      before: "Before",
-      after: "After",
-      onHover: false,
-    },
-
-    // Smoothing
-
-    smoothing: false,
-    smoothingAmount: 100,
-
-    // Other options
-
-    hoverStart: true,
-    verticalMode: false,
-    startingPoint: 50,
-    fluidMode: false,
-  };
-
-  new ImageCompare(imageViewer, options).mount();
+function comparisonClick() {
+  if (isLeftSideVisible) {
+    leftSideImage.style.visibility = "collapse";
+    rightSideImage.style.visibility = "visible";
+  } else {
+    leftSideImage.style.visibility = "visible";
+    rightSideImage.style.visibility = "collapse";
+  }
+  isLeftSideVisible = !isLeftSideVisible;
 }

@@ -3,11 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="node_modules/image-compare-viewer/dist/image-compare-viewer.min.css"
-    />
     <link rel="stylesheet" type="text/css" href="/src/styles.css" />
     <title>Tauri App</title>
     <script type="module" src="/src/main.ts" defer></script>
@@ -22,9 +17,13 @@
         Right side image
       </button>
     </div>
-    <div id="image-compare">
-      <img id="leftSideImage" src="src/assets/sampleA.jpg" alt="" />
-      <img id="rightSideImage" src="src/assets/sampleB.jpg" alt="" />
+    <div class="image-viewer">
+      <div id="left">
+        <img id="leftSideImage" src="src/assets/sampleA.jpg" alt="" />
+      </div>
+      <div id="right">
+        <img id="rightSideImage" src="src/assets/sampleB.jpg" alt="" />
+      </div>
     </div>
   </body>
 </html>
