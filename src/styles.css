@@ -85,14 +85,14 @@ img {
   position: absolute;
   width: auto;
   height: auto;
-  border-radius: 3px;
+  border-radius: 5px;
   background-color: rgba(76, 76, 76, 1);
   flex-direction: column;
   align-items: start;
   justify-content: start;
   flex-wrap: nowrap;
   padding-inline: 10px;
-  padding-block: 3px;
+  padding-block: 5px;
   z-index: 2;
 }
 
