@@ -59,6 +59,7 @@ img {
 
 .image-viewer {
   position: relative;
+  transform-origin: top left;
 }
 
 .image-viewer .image-divider {
