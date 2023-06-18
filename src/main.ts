@@ -33,6 +33,9 @@ const mOptionSlideButton = document.getElementById(
 const mOptionClickButton = document.getElementById(
   "optionClick"
 ) as HTMLImageElement;
+const mOptionZoomButton = document.getElementById(
+  "optionZoom"
+) as HTMLImageElement;
 
 const mOnMouseClickedFunction = () => {
   comparisonClick();
@@ -42,6 +45,7 @@ const mOnMouseMoveFunction = (event: MouseEvent) => {
 };
 
 let mIsLeftSideVisible: boolean = true;
+let mIsZoomed: boolean = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   mLeftSideButton?.addEventListener("click", () =>
@@ -58,10 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
   mOptionSlideButton?.addEventListener("click", () =>
     changeCompareMode(COMPARE_MODE.SLIDE)
   );
-
   mOptionClickButton?.addEventListener("click", () =>
     changeCompareMode(COMPARE_MODE.CLICK)
   );
+  mOptionZoomButton?.addEventListener("click", () => toggleZoom());
 });
 
 document.body.addEventListener("contextmenu", (event) => {
@@ -159,7 +163,7 @@ function changeToClickMode() {
 }
 
 function comparisonSlide(event: MouseEvent) {
-  let percentX: string = event.clientX - 10 + "px";
+  let percentX: string = event.clientX + 10 + "px";
   // let percentY: number = (event.pageY / window.innerHeight) * 100;
   invoke("print_log", { text: `X: ${percentX}` });
   mImageLeftArea!.style.width = percentX;
@@ -176,4 +180,13 @@ function comparisonClick() {
     mRightSideImage.style.visibility = "collapse";
   }
   mIsLeftSideVisible = !mIsLeftSideVisible;
+}
+
+function toggleZoom() {
+  if (mIsZoomed) {
+    mImageViewer!.style.transform = "scale(1.0)";
+  } else {
+    mImageViewer!.style.transform = "scale(2.0)";
+  }
+  mIsZoomed = !mIsZoomed;
 }
