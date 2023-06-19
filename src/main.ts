@@ -36,6 +36,9 @@ const mOptionClickButton = document.getElementById(
 const mOptionZoomButton = document.getElementById(
   "optionZoom"
 ) as HTMLImageElement;
+const mOptionDissolveRange = document.getElementById(
+  "dissolve"
+) as HTMLInputElement;
 
 const mOnMouseClickedFunction = () => {
   comparisonClick();
@@ -66,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     changeCompareMode(COMPARE_MODE.CLICK)
   );
   mOptionZoomButton?.addEventListener("click", () => toggleZoom());
+  mOptionDissolveRange.addEventListener("input", () => changeDissolveValue());
 });
 
 document.body.addEventListener("contextmenu", (event) => {
@@ -189,4 +193,9 @@ function toggleZoom() {
     mImageViewer!.style.transform = "scale(2.0)";
   }
   mIsZoomed = !mIsZoomed;
+}
+
+function changeDissolveValue() {
+  let range = mOptionDissolveRange.value;
+  invoke("print_log", { text: `dissolve range: ${range}` });
 }
