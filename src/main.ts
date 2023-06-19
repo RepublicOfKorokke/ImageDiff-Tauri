@@ -14,13 +14,13 @@ const mLeftSideImage = document.getElementById(
 ) as HTMLImageElement;
 const mLeftSideButton = document.getElementById(
   "buttonOpenLeftSideImage"
-) as HTMLImageElement;
+) as HTMLButtonElement;
 const mRightSideImage = document.getElementById(
   "rightSideImage"
 ) as HTMLImageElement;
 const mRightSideButton = document.getElementById(
   "buttonOpenRightSideImage"
-) as HTMLImageElement;
+) as HTMLButtonElement;
 
 const mImageViewer = document.getElementById("imageViewer");
 const mImageDivider = document.getElementById("imageDivider");
@@ -29,13 +29,13 @@ const mImageLeftArea = document.getElementById("leftArea");
 const mContextMenu = document.getElementById("contextmenu");
 const mOptionSlideButton = document.getElementById(
   "optionSlide"
-) as HTMLImageElement;
+) as HTMLButtonElement;
 const mOptionClickButton = document.getElementById(
   "optionClick"
-) as HTMLImageElement;
+) as HTMLButtonElement;
 const mOptionZoomButton = document.getElementById(
   "optionZoom"
-) as HTMLImageElement;
+) as HTMLButtonElement;
 const mOptionDissolveRange = document.getElementById(
   "dissolve"
 ) as HTMLInputElement;
