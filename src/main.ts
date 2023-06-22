@@ -5,7 +5,7 @@ import { appWindow, LogicalSize } from "@tauri-apps/api/window";
 const COMPARE_MODE = {
   SLIDE: 0,
   CLICK: 1,
-  FADE: 2,
+  DISSOLVE: 2,
 } as const;
 type COMPARE_MODE = (typeof COMPARE_MODE)[keyof typeof COMPARE_MODE];
 
@@ -36,8 +36,11 @@ const mOptionClickButton = document.getElementById(
 const mOptionZoomButton = document.getElementById(
   "optionZoom"
 ) as HTMLButtonElement;
+const mOptionDissolveButton = document.getElementById(
+  "optionDissolve"
+) as HTMLButtonElement;
 const mOptionDissolveRange = document.getElementById(
-  "dissolve"
+  "rangeDissolve"
 ) as HTMLInputElement;
 
 const mOnMouseClickedFunction = () => {
@@ -68,8 +71,11 @@ document.addEventListener("DOMContentLoaded", () => {
   mOptionClickButton?.addEventListener("click", () =>
     changeCompareMode(COMPARE_MODE.CLICK)
   );
-  mOptionZoomButton?.addEventListener("click", () => toggleZoom());
+  mOptionDissolveButton.addEventListener("click", () =>
+    changeCompareMode(COMPARE_MODE.DISSOLVE)
+  );
   mOptionDissolveRange.addEventListener("input", () => changeDissolveValue());
+  mOptionZoomButton?.addEventListener("click", () => toggleZoom());
 });
 
 document.body.addEventListener("contextmenu", (event) => {
@@ -140,7 +146,8 @@ function changeCompareMode(mode: COMPARE_MODE) {
     case COMPARE_MODE.CLICK:
       changeToClickMode();
       break;
-    case COMPARE_MODE.FADE:
+    case COMPARE_MODE.DISSOLVE:
+      changeToDissolveMode();
       break;
     default:
       break;
@@ -163,6 +170,15 @@ function changeToClickMode() {
   mImageDivider!.style.display = "none";
   mIsLeftSideVisible = true;
   mImageViewer?.addEventListener("click", mOnMouseClickedFunction);
+  document.removeEventListener("mousemove", mOnMouseMoveFunction);
+}
+
+function changeToDissolveMode() {
+  mImageLeftArea!.style.width = "100%";
+  mLeftSideImage.style.visibility = "visible";
+  mRightSideImage.style.visibility = "visible";
+  mImageDivider!.style.display = "none";
+  mImageViewer?.removeEventListener("click", mOnMouseClickedFunction);
   document.removeEventListener("mousemove", mOnMouseMoveFunction);
 }
 
