@@ -2,7 +2,7 @@
 
 
 <p align="center">
-  <img src="https://github.com/RepublicOfKorokke/ImageDiff-Tauri/blob/update/app-icon/src-tauri/icons/128x128@2x.png" />
+  <img src="https://github.com/RepublicOfKorokke/ImageDiff-Tauri/blob/main/src-tauri/icons/128x128%402x.png" />
 </p>
 
 
