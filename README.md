@@ -1,6 +1,12 @@
-# Simple Image comparison app
+<h1 align="center">Simple Image comparison app</h1>
 
-Check image diff by simple view
+
+<p align="center">
+  <img src="https://github.com/RepublicOfKorokke/ImageDiff-Tauri/blob/update/app-icon/src-tauri/icons/128x128@2x.png" />
+</p>
+
+
+<h2 align="center">Check image diff by simple view</h2>
 
 ![example](/Screenshot.jpg)
 
